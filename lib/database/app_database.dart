@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
-
 part 'app_database.g.dart';
+
 
 class Books extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -44,10 +44,10 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
 
-  Future<List<Book>> getBooks()async{
+
+  Future<List<Book>> fetchBooks()async{
     return await select(books).get();
   }
-
 
 
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:hadith_app_test/helper/init_dependency.dart';
+import 'package:hadith_app_test/pages/home_page.dart';
+
 
 void main() {
   runApp(const HadithAppTest());
@@ -11,10 +14,10 @@ class HadithAppTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return  GetMaterialApp(
+      initialBinding: InitDependency(),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

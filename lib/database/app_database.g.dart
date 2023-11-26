@@ -409,12 +409,337 @@ class BooksCompanion extends UpdateCompanion<Book> {
   }
 }
 
+class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChaptersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _chapterIdMeta =
+      const VerificationMeta('chapterId');
+  @override
+  late final GeneratedColumn<int> chapterId = GeneratedColumn<int>(
+      'chapter_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _bookIdMeta = const VerificationMeta('bookId');
+  @override
+  late final GeneratedColumn<int> bookId = GeneratedColumn<int>(
+      'book_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<int> number = GeneratedColumn<int>(
+      'number', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _hadisRangeMeta =
+      const VerificationMeta('hadisRange');
+  @override
+  late final GeneratedColumn<String> hadisRange = GeneratedColumn<String>(
+      'hadis_range', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, chapterId, bookId, title, number, hadisRange];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'chapters';
+  @override
+  VerificationContext validateIntegrity(Insertable<Chapter> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('chapter_id')) {
+      context.handle(_chapterIdMeta,
+          chapterId.isAcceptableOrUnknown(data['chapter_id']!, _chapterIdMeta));
+    } else if (isInserting) {
+      context.missing(_chapterIdMeta);
+    }
+    if (data.containsKey('book_id')) {
+      context.handle(_bookIdMeta,
+          bookId.isAcceptableOrUnknown(data['book_id']!, _bookIdMeta));
+    } else if (isInserting) {
+      context.missing(_bookIdMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('number')) {
+      context.handle(_numberMeta,
+          number.isAcceptableOrUnknown(data['number']!, _numberMeta));
+    } else if (isInserting) {
+      context.missing(_numberMeta);
+    }
+    if (data.containsKey('hadis_range')) {
+      context.handle(
+          _hadisRangeMeta,
+          hadisRange.isAcceptableOrUnknown(
+              data['hadis_range']!, _hadisRangeMeta));
+    } else if (isInserting) {
+      context.missing(_hadisRangeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Chapter map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Chapter(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      chapterId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}chapter_id'])!,
+      bookId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}book_id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      number: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}number'])!,
+      hadisRange: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}hadis_range'])!,
+    );
+  }
+
+  @override
+  $ChaptersTable createAlias(String alias) {
+    return $ChaptersTable(attachedDatabase, alias);
+  }
+}
+
+class Chapter extends DataClass implements Insertable<Chapter> {
+  final int id;
+  final int chapterId;
+  final int bookId;
+  final String title;
+  final int number;
+  final String hadisRange;
+  const Chapter(
+      {required this.id,
+      required this.chapterId,
+      required this.bookId,
+      required this.title,
+      required this.number,
+      required this.hadisRange});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['chapter_id'] = Variable<int>(chapterId);
+    map['book_id'] = Variable<int>(bookId);
+    map['title'] = Variable<String>(title);
+    map['number'] = Variable<int>(number);
+    map['hadis_range'] = Variable<String>(hadisRange);
+    return map;
+  }
+
+  ChaptersCompanion toCompanion(bool nullToAbsent) {
+    return ChaptersCompanion(
+      id: Value(id),
+      chapterId: Value(chapterId),
+      bookId: Value(bookId),
+      title: Value(title),
+      number: Value(number),
+      hadisRange: Value(hadisRange),
+    );
+  }
+
+  factory Chapter.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Chapter(
+      id: serializer.fromJson<int>(json['id']),
+      chapterId: serializer.fromJson<int>(json['chapterId']),
+      bookId: serializer.fromJson<int>(json['bookId']),
+      title: serializer.fromJson<String>(json['title']),
+      number: serializer.fromJson<int>(json['number']),
+      hadisRange: serializer.fromJson<String>(json['hadisRange']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'chapterId': serializer.toJson<int>(chapterId),
+      'bookId': serializer.toJson<int>(bookId),
+      'title': serializer.toJson<String>(title),
+      'number': serializer.toJson<int>(number),
+      'hadisRange': serializer.toJson<String>(hadisRange),
+    };
+  }
+
+  Chapter copyWith(
+          {int? id,
+          int? chapterId,
+          int? bookId,
+          String? title,
+          int? number,
+          String? hadisRange}) =>
+      Chapter(
+        id: id ?? this.id,
+        chapterId: chapterId ?? this.chapterId,
+        bookId: bookId ?? this.bookId,
+        title: title ?? this.title,
+        number: number ?? this.number,
+        hadisRange: hadisRange ?? this.hadisRange,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Chapter(')
+          ..write('id: $id, ')
+          ..write('chapterId: $chapterId, ')
+          ..write('bookId: $bookId, ')
+          ..write('title: $title, ')
+          ..write('number: $number, ')
+          ..write('hadisRange: $hadisRange')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, chapterId, bookId, title, number, hadisRange);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Chapter &&
+          other.id == this.id &&
+          other.chapterId == this.chapterId &&
+          other.bookId == this.bookId &&
+          other.title == this.title &&
+          other.number == this.number &&
+          other.hadisRange == this.hadisRange);
+}
+
+class ChaptersCompanion extends UpdateCompanion<Chapter> {
+  final Value<int> id;
+  final Value<int> chapterId;
+  final Value<int> bookId;
+  final Value<String> title;
+  final Value<int> number;
+  final Value<String> hadisRange;
+  const ChaptersCompanion({
+    this.id = const Value.absent(),
+    this.chapterId = const Value.absent(),
+    this.bookId = const Value.absent(),
+    this.title = const Value.absent(),
+    this.number = const Value.absent(),
+    this.hadisRange = const Value.absent(),
+  });
+  ChaptersCompanion.insert({
+    this.id = const Value.absent(),
+    required int chapterId,
+    required int bookId,
+    required String title,
+    required int number,
+    required String hadisRange,
+  })  : chapterId = Value(chapterId),
+        bookId = Value(bookId),
+        title = Value(title),
+        number = Value(number),
+        hadisRange = Value(hadisRange);
+  static Insertable<Chapter> custom({
+    Expression<int>? id,
+    Expression<int>? chapterId,
+    Expression<int>? bookId,
+    Expression<String>? title,
+    Expression<int>? number,
+    Expression<String>? hadisRange,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (chapterId != null) 'chapter_id': chapterId,
+      if (bookId != null) 'book_id': bookId,
+      if (title != null) 'title': title,
+      if (number != null) 'number': number,
+      if (hadisRange != null) 'hadis_range': hadisRange,
+    });
+  }
+
+  ChaptersCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? chapterId,
+      Value<int>? bookId,
+      Value<String>? title,
+      Value<int>? number,
+      Value<String>? hadisRange}) {
+    return ChaptersCompanion(
+      id: id ?? this.id,
+      chapterId: chapterId ?? this.chapterId,
+      bookId: bookId ?? this.bookId,
+      title: title ?? this.title,
+      number: number ?? this.number,
+      hadisRange: hadisRange ?? this.hadisRange,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (chapterId.present) {
+      map['chapter_id'] = Variable<int>(chapterId.value);
+    }
+    if (bookId.present) {
+      map['book_id'] = Variable<int>(bookId.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (hadisRange.present) {
+      map['hadis_range'] = Variable<String>(hadisRange.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChaptersCompanion(')
+          ..write('id: $id, ')
+          ..write('chapterId: $chapterId, ')
+          ..write('bookId: $bookId, ')
+          ..write('title: $title, ')
+          ..write('number: $number, ')
+          ..write('hadisRange: $hadisRange')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $BooksTable books = $BooksTable(this);
+  late final $ChaptersTable chapters = $ChaptersTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [books];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [books, chapters];
 }

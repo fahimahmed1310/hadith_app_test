@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hadith_app_test/controllers/database_controller.dart';
+import 'package:hadith_app_test/pages/chapters_page.dart';
 import 'package:hadith_app_test/utils/app_constants.dart';
 import 'package:hexagon/hexagon.dart';
 
-class HomePageCardList extends StatelessWidget {
+class CardListUi extends StatelessWidget {
   final String? modifiedColor;
   final String? abvrCode;
   final String? title;
   final String? numberOfHadis;
+  final String? chapterId;
 
-  HomePageCardList({
-    required this.modifiedColor,
-    required this.abvrCode,
-    required this.title,
-    required this.numberOfHadis,
+  CardListUi({
+    this.modifiedColor,
+    this.abvrCode,
+    this.title,
+    this.numberOfHadis,
+    this.chapterId
   });
 
   @override
   Widget build(BuildContext context) {
+
+    DatabaseController databaseController = Get.find();
+
     return InkWell(
       onTap: (){
+        if(databaseController.pageName == PageName.homePage){
+          databaseController.pageName = PageName.chaptersPage;
+          databaseController.storeHexaColor = modifiedColor!;
+          databaseController.chapterList = [];
+          databaseController.fetchChapters();
+          if(databaseController.success == true){
+            Get.to(
+                  () => ChaptersPage(
+                title: title,
+                numberOfHadis: numberOfHadis,
+              ),
+            );
+          }
+        }
 
       },
       child: Card(
@@ -34,8 +56,10 @@ class HomePageCardList extends StatelessWidget {
                 HexagonWidget.pointy(
                   cornerRadius: 10,
                   width: 50,
-                  color: Color(int.parse(modifiedColor!)),
-                  child: Text(abvrCode!,style: const TextStyle(
+                  color: databaseController.pageName == PageName.chaptersPage ? Color(int.parse(databaseController.storeHexaColor))
+                      : Color(int.parse(modifiedColor!)),
+                  child: Text(
+                    databaseController.pageName == PageName.chaptersPage ? chapterId! : abvrCode!,style: const TextStyle(
                       fontWeight: FontWeight.bold
                   ),),
                 ),
@@ -56,14 +80,27 @@ class HomePageCardList extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold
                             ),),
-                          const Text("ইমাম",style: TextStyle(
+                          databaseController.pageName == PageName.homePage ? const Text("ইমাম",style: TextStyle(
                             color: Colors.white,
                             fontFamily: "Bangla",
                             fontSize: 15,
-                          ),),
+                          ),):Row(
+                            children: [
+                              const Text("হাদিসের রেঞ্জঃ ", style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Bangla",
+                                fontSize: 15,
+                              ),),
+                              Text("$numberOfHadis", style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Bangla",
+                                fontSize: 15,
+                              ),),
+                            ],
+                          )
                         ],
                       ),
-                      Expanded(
+                      databaseController.pageName == PageName.homePage ? Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -81,7 +118,7 @@ class HomePageCardList extends StatelessWidget {
                               ),),
                           ],
                         ),
-                      ),
+                      ): Container(),
                     ],
                   ),
                 )

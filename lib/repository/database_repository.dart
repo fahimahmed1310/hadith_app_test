@@ -8,4 +8,8 @@ class DatabaseRepository{
     return await _appDatabase.fetchBooks();
   }
 
+  Future<List<Chapter>> fetchChapters(int id)async{
+    return await _appDatabase.fetchChapters(id);
+  }
+
 }

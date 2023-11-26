@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hadith_app_test/controllers/database_controller.dart';
 import 'package:hadith_app_test/utils/app_constants.dart';
-import 'package:hadith_app_test/utils/common_widgets/home_page_card_list.dart';
-import 'package:intl/intl.dart';
+import 'package:hadith_app_test/utils/common_methods.dart';
+import 'package:hadith_app_test/utils/common_widgets/card_list_ui.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -67,9 +68,11 @@ class HomePage extends StatelessWidget {
                             itemCount: databaseController.bookList.length,
                             itemBuilder: (context, index) {
                               final book = databaseController.bookList[index];
-                              String modifiedColor = book.colorCode.replaceAll('#', '0xff');
-                              final numberOfHadith = NumberFormat("#########", "bn").format(book.numberOfHadis);
-                              return HomePageCardList(
+
+                              String modifiedColor = CommonMethods.colorModification(book.colorCode);
+                              String numberOfHadith = CommonMethods.englishToBangla(book.numberOfHadis);
+
+                              return CardListUi(
                                 modifiedColor: modifiedColor,
                                 abvrCode: book.abvrCode,
                                 title: book.title,
